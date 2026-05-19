@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f8faf9;
+  color: #16202a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer components {
+  .section {
+    @apply mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-md bg-clean-500 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-clean-700 disabled:cursor-not-allowed disabled:bg-zinc-300;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-md border border-zinc-200 bg-white px-4 py-2.5 text-sm font-bold text-ink-700 shadow-sm transition hover:border-clean-200 hover:bg-clean-50 hover:text-clean-700;
+  }
+
+  .icon-btn {
+    @apply inline-grid h-9 w-9 place-items-center rounded-md border border-zinc-200 bg-white text-ink-700 transition hover:border-clean-200 hover:bg-clean-50 hover:text-clean-700;
+  }
+
+  .field-label {
+    @apply grid gap-2 text-sm font-bold text-ink-700;
+  }
+
+  .field {
+    @apply w-full rounded-md border border-zinc-200 bg-white px-3 py-2.5 text-sm font-medium text-ink-900 outline-none transition placeholder:text-zinc-400 focus:border-clean-500 focus:ring-4 focus:ring-clean-100;
+  }
+}
