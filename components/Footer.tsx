@@ -34,7 +34,7 @@ export function Footer() {
           links={[
             ["Customer signup", "/register/customer"],
             ["Cleaner signup", "/register/cleaner"],
-            ["Admin login", "/admin/login"]
+            ["Admin login", "/login/admin"]
           ]}
         />
         <FooterColumn

@@ -7,6 +7,7 @@ import type { Cleaner, CleaningType } from "@/lib/types";
 import { calculateBookingTotal } from "@/lib/utils";
 import { PaymentSummary } from "./PaymentSummary";
 import { StatusBadge } from "./StatusBadge";
+import { GoogleMapTagger } from "./GoogleMapTagger";
 
 export function BookingForm({ cleaner }: { cleaner: Cleaner }) {
   const [date, setDate] = useState("2026-05-14");
@@ -14,6 +15,7 @@ export function BookingForm({ cleaner }: { cleaner: Cleaner }) {
   const [hours, setHours] = useState(3);
   const [cleaningType, setCleaningType] = useState<CleaningType>(cleaner.cleaningTypes[0]);
   const [address, setAddress] = useState("118 River Street, Apt 8");
+  const [mapTag, setMapTag] = useState("118 River Street, Apt 8");
   const [instructions, setInstructions] = useState("Focus on kitchen appliances and guest bathroom.");
   const [paymentStatus, setPaymentStatus] = useState<"idle" | "processing" | "paid">("idle");
   const [bookingId, setBookingId] = useState("");
@@ -37,6 +39,7 @@ export function BookingForm({ cleaner }: { cleaner: Cleaner }) {
       hours,
       cleaningType,
       address,
+      mapTag,
       instructions,
       bookingStatus: "Pending cleaner confirmation",
       paymentStatus: "Paid",
@@ -146,6 +149,8 @@ export function BookingForm({ cleaner }: { cleaner: Cleaner }) {
           </span>
           <input className="field" value={address} onChange={(event) => setAddress(event.target.value)} />
         </label>
+
+        <GoogleMapTagger address={address} value={mapTag} onChange={setMapTag} />
 
         <label className="field-label">
           <span className="inline-flex items-center gap-2">

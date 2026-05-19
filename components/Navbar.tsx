@@ -2,21 +2,48 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Sparkles, X } from "lucide-react";
-import { useState } from "react";
+import { LogOut, Menu, Sparkles, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import {
+  AUTH_CHANGE_EVENT,
+  clearSession,
+  dashboardForRole,
+  getStoredSession,
+  type AuthSession
+} from "@/lib/auth";
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/cleaners", label: "Browse cleaners" },
-  { href: "/dashboard/customer", label: "Customer" },
-  { href: "/dashboard/cleaner", label: "Cleaner" },
-  { href: "/dashboard/admin", label: "Admin" }
+  { href: "/register/cleaner", label: "Become a cleaner" }
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [session, setSession] = useState<AuthSession | null>(null);
+
+  useEffect(() => {
+    function syncSession() {
+      setSession(getStoredSession());
+    }
+
+    syncSession();
+    window.addEventListener("storage", syncSession);
+    window.addEventListener(AUTH_CHANGE_EVENT, syncSession);
+
+    return () => {
+      window.removeEventListener("storage", syncSession);
+      window.removeEventListener(AUTH_CHANGE_EVENT, syncSession);
+    };
+  }, []);
+
+  function handleLogout() {
+    clearSession();
+    setOpen(false);
+    window.location.href = "/";
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur">
@@ -44,12 +71,32 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/login" className="btn-secondary">
-            Log in
-          </Link>
-          <Link href="/cleaners" className="btn-primary">
-            Book Cleaning
-          </Link>
+          {session ? (
+            <>
+              <Link href={dashboardForRole(session.role)} className="btn-secondary">
+                {session.name}
+              </Link>
+              <button type="button" className="btn-primary" onClick={handleLogout}>
+                <LogOut size={17} aria-hidden />
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="btn-secondary">
+                Customer
+              </Link>
+              <Link href="/login/cleaner" className="btn-secondary">
+                Cleaner
+              </Link>
+              <Link href="/login/admin" className="btn-secondary">
+                Admin
+              </Link>
+              <Link href="/cleaners" className="btn-primary">
+                Book Cleaning
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -75,14 +122,36 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <Link href="/login" className="btn-secondary text-center" onClick={() => setOpen(false)}>
-                Log in
-              </Link>
-              <Link href="/cleaners" className="btn-primary text-center" onClick={() => setOpen(false)}>
-                Book
-              </Link>
-            </div>
+            {session ? (
+              <div className="mt-2 grid gap-2">
+                <Link
+                  href={dashboardForRole(session.role)}
+                  className="btn-secondary justify-center text-center"
+                  onClick={() => setOpen(false)}
+                >
+                  {session.name}
+                </Link>
+                <button type="button" className="btn-primary justify-center" onClick={handleLogout}>
+                  <LogOut size={17} aria-hidden />
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <div className="mt-2 grid gap-2 sm:grid-cols-4">
+                <Link href="/login" className="btn-secondary justify-center text-center" onClick={() => setOpen(false)}>
+                  Customer
+                </Link>
+                <Link href="/login/cleaner" className="btn-secondary justify-center text-center" onClick={() => setOpen(false)}>
+                  Cleaner
+                </Link>
+                <Link href="/login/admin" className="btn-secondary justify-center text-center" onClick={() => setOpen(false)}>
+                  Admin
+                </Link>
+                <Link href="/cleaners" className="btn-primary justify-center text-center" onClick={() => setOpen(false)}>
+                  Book
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       ) : null}

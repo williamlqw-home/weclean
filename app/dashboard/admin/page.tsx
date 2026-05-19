@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { MessageSquareWarning, RefreshCcw, UsersRound } from "lucide-react";
 import { AdminApprovalTable } from "@/components/AdminApprovalTable";
+import { AuthGuard } from "@/components/AuthGuard";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { StatusBadge } from "@/components/StatusBadge";
 import { bookings, cleaners, customers, payments } from "@/lib/mock-data";
@@ -20,8 +21,9 @@ export default function AdminDashboardPage() {
   const revenue = payments.reduce((sum, payment) => sum + payment.amount, 0);
 
   return (
-    <DashboardLayout role="Admin" title="Operations" navItems={navItems}>
-      <div className="space-y-6">
+    <AuthGuard role="admin">
+      <DashboardLayout role="Admin" title="Operations" navItems={navItems}>
+        <div className="space-y-6">
         <section className="grid gap-4 md:grid-cols-5">
           <Metric title="Customers" value={String(customers.length)} />
           <Metric title="Cleaners" value={String(cleaners.length)} />
@@ -104,8 +106,9 @@ export default function AdminDashboardPage() {
           <ActionCard icon={<MessageSquareWarning size={20} />} title="Review moderation" body="Flagged reviews would appear here for admin action before hiding or restoring content." />
           <ActionCard icon={<RefreshCcw size={20} />} title="Cancellation handling" body="Admin can update booking status to cancelled, refunded, or completed depending on support outcomes." />
         </section>
-      </div>
-    </DashboardLayout>
+        </div>
+      </DashboardLayout>
+    </AuthGuard>
   );
 }
 

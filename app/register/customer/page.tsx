@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { UserPlus } from "lucide-react";
+import { RegisterSessionButton } from "@/components/RegisterSessionButton";
 
 export default function CustomerRegisterPage() {
   return (
@@ -39,9 +39,7 @@ export default function CustomerRegisterPage() {
               Address
               <input className="field" defaultValue="118 River Street, Apt 8" />
             </label>
-            <Link href="/cleaners" className="btn-primary justify-center">
-              Create account and browse
-            </Link>
+            <RegisterSessionButton role="customer" label="Create account and browse" redirectTo="/cleaners" />
           </form>
         </section>
       </div>

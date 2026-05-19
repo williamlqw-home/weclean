@@ -74,6 +74,7 @@ export type Booking = {
   hours: number;
   cleaningType: CleaningType;
   address: string;
+  mapTag?: string;
   instructions: string;
   bookingStatus: BookingStatus;
   paymentStatus: PaymentStatus;

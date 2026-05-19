@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MessageSquareText, Plus, Star } from "lucide-react";
 import { DashboardLayout } from "@/components/DashboardLayout";
+import { AuthGuard } from "@/components/AuthGuard";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
@@ -21,8 +22,9 @@ export default function CustomerDashboardPage() {
   const cancelled = bookings.filter((booking) => ["Cancelled", "Refunded"].includes(booking.bookingStatus));
 
   return (
-    <DashboardLayout role="Customer" title="Priya Shah" navItems={navItems}>
-      <div className="space-y-6">
+    <AuthGuard role="customer">
+      <DashboardLayout role="Customer" title="Priya Shah" navItems={navItems}>
+        <div className="space-y-6">
         <section className="grid gap-4 md:grid-cols-4">
           <Metric title="Upcoming" value={String(upcoming.length)} />
           <Metric title="Completed" value={String(completed.length)} />
@@ -73,8 +75,9 @@ export default function CustomerDashboardPage() {
           <EmptyState title="No saved addresses yet" body="Saved service addresses will appear here after backend profile storage is connected." />
           <ErrorState message="Payment webhooks are mocked in this prototype. Connect the gateway webhook endpoint before production." />
         </div>
-      </div>
-    </DashboardLayout>
+        </div>
+      </DashboardLayout>
+    </AuthGuard>
   );
 }
 

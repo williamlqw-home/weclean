@@ -1,6 +1,6 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { BadgeCheck, Camera, FileUp, UserRoundCog } from "lucide-react";
+import { RegisterSessionButton } from "@/components/RegisterSessionButton";
 
 export default function CleanerRegisterPage() {
   return (
@@ -79,9 +79,7 @@ export default function CleanerRegisterPage() {
               <UploadBox icon={<FileUp size={18} />} title="Identity document" />
               <UploadBox icon={<Camera size={18} />} title="Portfolio photos" />
             </div>
-            <Link href="/dashboard/cleaner" className="btn-primary justify-center">
-              Submit application
-            </Link>
+            <RegisterSessionButton role="cleaner" label="Submit application" redirectTo="/dashboard/cleaner" />
           </form>
         </section>
       </div>

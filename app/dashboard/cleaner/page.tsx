@@ -1,5 +1,6 @@
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { CleanerDashboard } from "@/components/CleanerDashboard";
+import { AuthGuard } from "@/components/AuthGuard";
 
 const navItems = [
   { label: "Overview", href: "/dashboard/cleaner", active: true },
@@ -10,8 +11,10 @@ const navItems = [
 
 export default function CleanerDashboardPage() {
   return (
-    <DashboardLayout role="Cleaner" title="Maya Chen" navItems={navItems}>
-      <CleanerDashboard />
-    </DashboardLayout>
+    <AuthGuard role="cleaner">
+      <DashboardLayout role="Cleaner" title="Maya Chen" navItems={navItems}>
+        <CleanerDashboard />
+      </DashboardLayout>
+    </AuthGuard>
   );
 }
